@@ -17,7 +17,7 @@ export default {
       username: this.get('database.username'),
       password: this.get('database.password'),
       database: this.get('database.database'),
-      entities: [__dirname + '/../**/*.entity.ts'],
+      entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
       synchronize: true
       // migrationsTableName: 'migration',
       // migrations: ['src/migration/*.ts'],
