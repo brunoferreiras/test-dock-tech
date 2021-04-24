@@ -1,0 +1,6 @@
+{
+  "*.ts": [
+    "npm run format:staged",
+    "npm run eslint:staged"
+  ]
+}
