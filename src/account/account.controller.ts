@@ -11,6 +11,7 @@ import {
 import { AccountService } from './account.service'
 import { BlockAccountDto } from './dto/block-account.dto'
 import { CreateAccountDto } from './dto/create-account.dto'
+import { DepositAccountDto } from './dto/deposit-account.dto'
 
 @Controller('account')
 export class AccountController {
@@ -39,6 +40,16 @@ export class AccountController {
         id,
         blockAccountDto.block
       )
+    }
+  }
+
+  @Patch(':id/deposit')
+  async deposit(
+    @Param('id') id: string,
+    @Body() depositAccountDto: DepositAccountDto
+  ) {
+    return {
+      balance: await this.accountService.deposit(id, depositAccountDto.value)
     }
   }
 }

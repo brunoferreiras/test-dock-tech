@@ -20,13 +20,12 @@ export class Account {
   person_id: number
 
   @Column({
-    type: 'money'
+    type: 'numeric'
   })
   balance: number
 
   @Column({
-    type: 'money',
-    unsigned: true
+    type: 'numeric'
   })
   daily_withdraw_limit: number
 

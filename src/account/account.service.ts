@@ -43,26 +43,34 @@ export class AccountService {
   }
 
   async getBalance(id: string): Promise<number> {
-    const account = await this.repository.findOne(id)
-
-    if (!account) {
-      throw new AccountNotFound()
-    }
-
+    const account = await this.getAccount(id)
     return account.balance
   }
 
-  async updateActiveAccount(id: string, active: boolean): Promise<boolean> {
+  private async getAccount(id: string): Promise<Account> {
     const account = await this.repository.findOne(id)
 
     if (!account) {
       throw new AccountNotFound()
     }
+
+    return account
+  }
+
+  async updateActiveAccount(id: string, active: boolean): Promise<boolean> {
+    const account = await this.getAccount(id)
 
     account.account_active = !active
 
     const updated = await this.repository.save(account)
 
     return updated.account_active
+  }
+
+  async deposit(id: string, value: number): Promise<number> {
+    const account = await this.getAccount(id)
+    account.balance = +account.balance + value
+    const updated = await this.repository.save(account)
+    return updated.balance
   }
 }
