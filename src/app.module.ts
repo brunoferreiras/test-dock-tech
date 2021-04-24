@@ -5,6 +5,7 @@ import { PersonModule } from './person/person.module'
 import { BootstrapModule } from './bootstrap.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AccountModule } from './account/account.module'
+import { TransactionsModule } from './transactions/transactions.module'
 
 ConfigService.rootPath = path.resolve(__dirname, '..')
 
@@ -17,7 +18,8 @@ ConfigService.rootPath = path.resolve(__dirname, '..')
     }),
     PersonModule,
     BootstrapModule,
-    AccountModule
+    AccountModule,
+    TransactionsModule
   ]
 })
 export class AppModule {}
