@@ -2,7 +2,8 @@ up:
 	docker-compose up -d
 
 build:
-	docker-compose up -d --build
+	rm -rf dist/
+	docker-compose up -d --build --force-recreate --renew-anon-volumes
 
 logs:
 	docker-compose logs -f app

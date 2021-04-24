@@ -8,3 +8,4 @@ dist
 documentation
 Dockerfile
 docker-compose.yml
+.files
