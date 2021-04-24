@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { TransactionsService } from 'src/transactions/transactions.service'
 import { PersonService } from '../person/person.service'
 import { AccountRepository } from './account.repository'
 import { CreateAccountDto } from './dto/create-account.dto'
@@ -11,7 +12,8 @@ import { PersonAlreadyHasAccount } from './exceptions/person-already-has-account
 export class AccountService {
   constructor(
     private readonly repository: AccountRepository,
-    private readonly personService: PersonService
+    private readonly personService: PersonService,
+    private readonly transactionsService: TransactionsService
   ) {}
 
   async isCanCreateAccount(
@@ -71,6 +73,7 @@ export class AccountService {
     const account = await this.getAccount(id)
     account.balance = +account.balance + value
     const updated = await this.repository.save(account)
+    await this.transactionsService.register(+id, value)
     return updated.balance
   }
 }

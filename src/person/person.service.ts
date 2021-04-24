@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { AccountTypeEnum } from 'src/account/enums/account-type.enum'
 import { CreatePersonDto } from './dto/create-person.dto'
 import { Person } from './entities/person.entity'
 import { PersonNotFound } from './exceptions/person-not-found'
