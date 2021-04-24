@@ -7,9 +7,7 @@ import {
   Patch,
   HttpCode,
   HttpStatus,
-  Query,
-  ParseIntPipe,
-  HostParam
+  Query
 } from '@nestjs/common'
 import { Transaction } from '../transactions/entities/transaction.entity'
 import { AccountService } from './account.service'
@@ -19,6 +17,7 @@ import { DepositAccountDto } from './dto/deposit-account.dto'
 import { WithdrawAccountDto } from './dto/withdraw-account.dto'
 import { Pagination } from 'nestjs-typeorm-paginate'
 import { TransactionsService } from 'src/transactions/transactions.service'
+import { GetBankStatementDto } from './dto/get-bank-statement.dto'
 
 @Controller('account')
 export class AccountController {
@@ -76,14 +75,8 @@ export class AccountController {
   @Get(':id/bank_statement')
   async backStatement(
     @Param('id') id: string,
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 10,
-    @HostParam() hosts: string
+    @Query() getBankStatementDto: GetBankStatementDto
   ): Promise<Pagination<Transaction>> {
-    limit = limit > 100 ? 100 : limit
-    return await this.transactionsService.paginate(+id, {
-      page,
-      limit
-    })
+    return await this.transactionsService.paginate(+id, getBankStatementDto)
   }
 }

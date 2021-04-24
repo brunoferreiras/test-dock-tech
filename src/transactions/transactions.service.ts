@@ -6,6 +6,9 @@ import {
   Pagination,
   IPaginationOptions
 } from 'nestjs-typeorm-paginate'
+import { Between, FindManyOptions } from 'typeorm'
+import * as dayjs from 'dayjs'
+import { GetBankStatementDto } from 'src/account/dto/get-bank-statement.dto'
 
 @Injectable()
 export class TransactionsService {
@@ -22,19 +25,34 @@ export class TransactionsService {
 
   async paginate(
     accountId: number,
-    options: IPaginationOptions
+    getBankStatementDto: GetBankStatementDto
   ): Promise<Pagination<Transaction>> {
+    const optionsSearch: FindManyOptions<Transaction> = {
+      where: {
+        account_id: accountId
+      },
+      order: {
+        created_at: 'DESC'
+      }
+    }
+
+    if (getBankStatementDto?.start_date && getBankStatementDto?.end_date) {
+      const startDate = dayjs(getBankStatementDto?.start_date, {
+        utc: true
+      }).startOf('day')
+      const endDate = dayjs(getBankStatementDto?.end_date, { utc: true }).endOf(
+        'day'
+      )
+      optionsSearch.where['created_at'] = Between(startDate, endDate)
+    }
+
     return paginate<Transaction>(
       this.repository,
       {
-        ...options
+        page: getBankStatementDto.page,
+        limit: getBankStatementDto.limit
       },
-      {
-        account_id: accountId,
-        order: {
-          created_at: 'DESC'
-        }
-      }
+      optionsSearch
     )
   }
 }
