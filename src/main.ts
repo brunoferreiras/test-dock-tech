@@ -24,6 +24,9 @@ async function bootstrap() {
     })
   )
 
+  // Add prefix global
+  app.setGlobalPrefix('api/v1')
+
   const port: number = configService.get('app.port')
   await app.listen(port, () => {
     Logger.log(`App is running on: ${port}`)
