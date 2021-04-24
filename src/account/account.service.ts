@@ -4,6 +4,7 @@ import { AccountRepository } from './account.repository'
 import { CreateAccountDto } from './dto/create-account.dto'
 import { Account } from './entities/account.entity'
 import { AccountTypeEnum } from './enums/account-type.enum'
+import { AccountNotFound } from './exceptions/account-not-found.exception'
 import { PersonAlreadyHasAccount } from './exceptions/person-already-has-account.exception'
 
 @Injectable()
@@ -39,5 +40,15 @@ export class AccountService {
     await this.isCanCreateAccount(account.type, person.id)
 
     return await this.repository.save(account)
+  }
+
+  async getBalance(id: string): Promise<number> {
+    const account = await this.repository.findOne(id)
+
+    if (!account) {
+      throw new AccountNotFound()
+    }
+
+    return account.balance
   }
 }
