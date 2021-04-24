@@ -3,6 +3,7 @@ version: '3.7'
 networks:
   account_network:
     name: account_network
+    driver: bridge
 
 services:
   app:
@@ -17,7 +18,37 @@ services:
       - .:/app
       - /app/node_modules
     networks:
-      account_network:
+      - account_network
+    depends_on:
+      - database
     ports:
       - 3000:3000
       - 9252:9252
+
+  database:
+    image: postgres:13.2
+    container_name: account-database
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.files/database:/var/lib/postgresql/data
+    networks:
+      - account_network
+
+  pgadmin:
+    image: dpage/pgadmin4:5
+    container_name: account-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: 'fs.brunoferreira@gmail.com'
+      PGADMIN_DEFAULT_PASSWORD: 'account!'
+    ports:
+      - 16543:80
+    depends_on:
+      - database
+    networks:
+      - account_network

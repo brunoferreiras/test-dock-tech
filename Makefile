@@ -5,7 +5,14 @@ build:
 	docker-compose up -d --build
 
 logs:
-	docker-compose logs -f
+	docker-compose logs -f app
+
+logs-database:
+	docker-compose logs -f database
+
+reset-db:
+	docker-compose down
+	sudo rm -rf .files/database
 
 restart:
 	docker-compose restart
