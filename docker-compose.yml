@@ -1,0 +1,23 @@
+version: '3.7'
+
+networks:
+  account_network:
+    name: account_network
+
+services:
+  app:
+    container_name: account-management
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    restart: unless-stopped
+    command: npm run start:debug
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      account_network:
+    ports:
+      - 3000:3000
+      - 9252:9252
