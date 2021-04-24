@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { Transaction } from './entities/transaction.entity'
 import { TransactionsRepository } from './transactions.repository'
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions
+} from 'nestjs-typeorm-paginate'
 
 @Injectable()
 export class TransactionsService {
@@ -15,14 +20,21 @@ export class TransactionsService {
     return await this.repository.save(transaction)
   }
 
-  async historic(accountId: number): Promise<Transaction[]> {
-    return await this.repository.find({
-      where: {
-        account_id: accountId
+  async paginate(
+    accountId: number,
+    options: IPaginationOptions
+  ): Promise<Pagination<Transaction>> {
+    return paginate<Transaction>(
+      this.repository,
+      {
+        ...options
       },
-      order: {
-        created_at: 'DESC'
+      {
+        account_id: accountId,
+        order: {
+          created_at: 'DESC'
+        }
       }
-    })
+    )
   }
 }

@@ -98,8 +98,4 @@ export class AccountService {
     await this.transactionsService.register(+id, -value)
     return updated.balance
   }
-
-  async bankStatement(id: number): Promise<Transaction[]> {
-    return this.transactionsService.historic(id)
-  }
 }
