@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { PersonService } from '../person/person.service'
 import { AccountRepository } from './account.repository'
 import { CreateAccountDto } from './dto/create-account.dto'
@@ -35,15 +35,8 @@ export class AccountService {
       account_active: true
     })
     const person = await this.personService.findById(account.person_id)
-    if (!person) {
-      throw new InternalServerErrorException()
-    }
 
-    const isCan = await this.isCanCreateAccount(account.type, person.id)
-
-    if (!isCan) {
-      throw new InternalServerErrorException()
-    }
+    await this.isCanCreateAccount(account.type, person.id)
 
     return await this.repository.save(account)
   }

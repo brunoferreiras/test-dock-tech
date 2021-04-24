@@ -6,9 +6,17 @@ describe('AccountController', () => {
   let controller: AccountController
 
   beforeEach(async () => {
+    const accountServiceMock = {
+      create: jest.fn()
+    }
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AccountController],
-      providers: [AccountService]
+      providers: [
+        {
+          provide: AccountService,
+          useValue: accountServiceMock
+        }
+      ]
     }).compile()
 
     controller = module.get<AccountController>(AccountController)
