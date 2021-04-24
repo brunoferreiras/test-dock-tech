@@ -5,7 +5,9 @@ import { AccountRepository } from './account.repository'
 import { CreateAccountDto } from './dto/create-account.dto'
 import { Account } from './entities/account.entity'
 import { AccountTypeEnum } from './enums/account-type.enum'
+import { AccountBlockedException } from './exceptions/account-blocked.exception'
 import { AccountNotFound } from './exceptions/account-not-found.exception'
+import { InsufficientMoneyException } from './exceptions/insufficient-money.exception'
 import { PersonAlreadyHasAccount } from './exceptions/person-already-has-account.exception'
 
 @Injectable()
@@ -69,9 +71,28 @@ export class AccountService {
     return updated.account_active
   }
 
+  private verifyAccountBlocked(account: Account): void {
+    if (!account.account_active) {
+      throw new AccountBlockedException()
+    }
+  }
+
   async deposit(id: string, value: number): Promise<number> {
     const account = await this.getAccount(id)
+    this.verifyAccountBlocked(account)
     account.balance = +account.balance + value
+    const updated = await this.repository.save(account)
+    await this.transactionsService.register(+id, value)
+    return updated.balance
+  }
+
+  async withdraw(id: string, value: number): Promise<number> {
+    const account = await this.getAccount(id)
+    this.verifyAccountBlocked(account)
+    if (+account.balance < value) {
+      throw new InsufficientMoneyException()
+    }
+    account.balance = +account.balance - value
     const updated = await this.repository.save(account)
     await this.transactionsService.register(+id, value)
     return updated.balance
