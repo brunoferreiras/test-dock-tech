@@ -7,6 +7,7 @@ import { PersonRepository } from './person.repository'
 @Module({
   imports: [TypeOrmModule.forFeature([PersonRepository])],
   controllers: [PersonController],
-  providers: [PersonService]
+  providers: [PersonService],
+  exports: [PersonService]
 })
 export class PersonModule {}

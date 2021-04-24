@@ -17,7 +17,7 @@ export class Account {
   @Column({
     type: 'bigint'
   })
-  person_id: string
+  person_id: number
 
   @Column({
     type: 'money'
@@ -29,6 +29,11 @@ export class Account {
     unsigned: true
   })
   daily_withdraw_limit: number
+
+  @Column({
+    type: 'bool'
+  })
+  account_active: boolean
 
   @Column({
     type: 'enum',
