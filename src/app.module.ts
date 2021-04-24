@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from 'nestjs-config'
 import { PersonModule } from './person/person.module'
 import { BootstrapModule } from './bootstrap.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
+import { AccountModule } from './account/account.module'
 
 ConfigService.rootPath = path.resolve(__dirname, '..')
 
@@ -15,7 +16,8 @@ ConfigService.rootPath = path.resolve(__dirname, '..')
       useFactory: (config: ConfigService) => config.get('database').getConfig()
     }),
     PersonModule,
-    BootstrapModule
+    BootstrapModule,
+    AccountModule
   ]
 })
 export class AppModule {}
