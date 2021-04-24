@@ -8,6 +8,7 @@ import {
   HttpCode,
   HttpStatus
 } from '@nestjs/common'
+import { Transaction } from '../transactions/entities/transaction.entity'
 import { AccountService } from './account.service'
 import { BlockAccountDto } from './dto/block-account.dto'
 import { CreateAccountDto } from './dto/create-account.dto'
@@ -62,5 +63,10 @@ export class AccountController {
     return {
       balance: await this.accountService.withdraw(id, withdrawAccountDto.value)
     }
+  }
+
+  @Get(':id/bank_statement')
+  async backStatement(@Param('id') id: number): Promise<Transaction[]> {
+    return this.accountService.bankStatement(id)
   }
 }

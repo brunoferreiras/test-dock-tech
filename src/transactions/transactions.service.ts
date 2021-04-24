@@ -14,4 +14,15 @@ export class TransactionsService {
 
     return await this.repository.save(transaction)
   }
+
+  async historic(accountId: number): Promise<Transaction[]> {
+    return await this.repository.find({
+      where: {
+        account_id: accountId
+      },
+      order: {
+        created_at: 'DESC'
+      }
+    })
+  }
 }

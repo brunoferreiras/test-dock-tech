@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
-import { TransactionsService } from 'src/transactions/transactions.service'
+import { Transaction } from '../transactions/entities/transaction.entity'
+import { TransactionsService } from '../transactions/transactions.service'
 import { PersonService } from '../person/person.service'
 import { AccountRepository } from './account.repository'
 import { CreateAccountDto } from './dto/create-account.dto'
@@ -94,7 +95,11 @@ export class AccountService {
     }
     account.balance = +account.balance - value
     const updated = await this.repository.save(account)
-    await this.transactionsService.register(+id, value)
+    await this.transactionsService.register(+id, -value)
     return updated.balance
+  }
+
+  async bankStatement(id: number): Promise<Transaction[]> {
+    return this.transactionsService.historic(id)
   }
 }
