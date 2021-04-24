@@ -6,9 +6,18 @@ describe('PersonController', () => {
   let controller: PersonController
 
   beforeEach(async () => {
+    const serviceMock = {
+      create: jest.fn(),
+      findAll: jest.fn()
+    }
     const module: TestingModule = await Test.createTestingModule({
       controllers: [PersonController],
-      providers: [PersonService]
+      providers: [
+        {
+          provide: PersonService,
+          useValue: serviceMock
+        }
+      ]
     }).compile()
 
     controller = module.get<PersonController>(PersonController)
