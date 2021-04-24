@@ -51,4 +51,18 @@ export class AccountService {
 
     return account.balance
   }
+
+  async updateActiveAccount(id: string, active: boolean): Promise<boolean> {
+    const account = await this.repository.findOne(id)
+
+    if (!account) {
+      throw new AccountNotFound()
+    }
+
+    account.account_active = !active
+
+    const updated = await this.repository.save(account)
+
+    return updated.account_active
+  }
 }
