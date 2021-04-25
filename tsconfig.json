@@ -10,6 +10,12 @@
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
-    "incremental": true
-  }
+    "incremental": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@tests/*": ["tests/*"]
+    }
+  },
+  "include": ["src", "*.ts", "*.js"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "node_modules", "dist"]
 }
