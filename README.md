@@ -30,4 +30,14 @@ Para executar os testes unitários: `npm run test:unit`
 Para executar os testes e2e: `npm run test:e2e`
 Para executar a cobertura: `npm run test:cov`
 
-[](./docs/converage.png)
+[Collection](./docs/Account Management.postman_collection.json)
+[Environments](./docs/Account Management.postman_environment.json)
+
+![Coverage](./docs/coverage.png)
+
+## Heroku
+
+Endpoint: https://account-management-dock.herokuapp.com/
+
+É possível testar a collection do postman, com o endpoint do heroku. Devido ao plano de desenvolvimento, o dyno fica de stand-by após 30 minutos. Então, ao sair do stand-by há uma lentidão inicial, depois o funcionamento fica correto novamente.
+
