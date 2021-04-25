@@ -9,14 +9,14 @@ import {
   HttpStatus,
   Query
 } from '@nestjs/common'
-import { Transaction } from '../transactions/entities/transaction.entity'
+import { Transaction } from '@/transactions/entities/transaction.entity'
 import { AccountService } from './account.service'
 import { BlockAccountDto } from './dto/block-account.dto'
 import { CreateAccountDto } from './dto/create-account.dto'
 import { DepositAccountDto } from './dto/deposit-account.dto'
 import { WithdrawAccountDto } from './dto/withdraw-account.dto'
 import { Pagination } from 'nestjs-typeorm-paginate'
-import { TransactionsService } from '../transactions/transactions.service'
+import { TransactionsService } from '@/transactions/transactions.service'
 import { GetBankStatementDto } from './dto/get-bank-statement.dto'
 
 @Controller('account')

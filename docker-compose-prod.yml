@@ -1,0 +1,45 @@
+version: '3.7'
+
+networks:
+  account_network:
+    name: account_network
+    driver: bridge
+
+volumes:
+  db-data:
+
+services:
+  app:
+    container_name: account-management
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: production
+    restart: unless-stopped
+    command: npm run start:prod
+    env_file: .env
+    volumes:
+      - .:/app
+      - /app/node_modules
+    networks:
+      - account_network
+    depends_on:
+      - database
+    ports:
+      - 3000:3000
+      - 9252:9252
+
+  database:
+    image: postgres:13.2
+    container_name: account-database
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    ports:
+      - 5432:5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - account_network

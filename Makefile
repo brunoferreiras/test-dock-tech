@@ -1,6 +1,9 @@
 up:
 	docker-compose up -d
 
+up-prod:
+	docker-compose -f docker-compose-prod.yml up -d
+
 build:
 	rm -rf dist/
 	docker-compose up -d --build --force-recreate --renew-anon-volumes
