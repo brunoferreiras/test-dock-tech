@@ -106,4 +106,31 @@ describe('AccountService', () => {
       expect(await service.getBalance('any_id')).toEqual(accountMock.balance)
     })
   })
+
+  describe('updateActiveAccount()', () => {
+    it('should be called repository with correct params', async () => {
+      repository.save = jest.fn().mockReturnValue(accountMock)
+      repository.findOne = jest.fn().mockReturnValue(accountMock)
+      await service.updateActiveAccount('any_id', false)
+      expect(repository.findOne).toBeCalledWith('any_id')
+    })
+
+    it('should be throw AccountNotFound if account not exists', async () => {
+      expect(service.updateActiveAccount('any_id', false)).rejects.toThrow(
+        new AccountNotFound()
+      )
+    })
+
+    it('should be return false when account is active', async () => {
+      repository.save = jest.fn().mockReturnValue(accountMock)
+      repository.findOne = jest.fn().mockReturnValue(accountMock)
+      expect(await service.updateActiveAccount('any_id', true)).toBeFalsy()
+    })
+
+    it('should be return true when account is blocked', async () => {
+      repository.save = jest.fn().mockReturnValue(accountMock)
+      repository.findOne = jest.fn().mockReturnValue(accountMock)
+      expect(await service.updateActiveAccount('any_id', false)).toBeTruthy()
+    })
+  })
 })
