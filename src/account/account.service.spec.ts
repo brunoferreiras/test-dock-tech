@@ -7,6 +7,7 @@ import { AccountService } from './account.service'
 import { CreateAccountDto } from './dto/create-account.dto'
 import { Account } from './entities/account.entity'
 import { PersonAlreadyHasAccount } from './exceptions/person-already-has-account.exception'
+import { AccountNotFound } from './exceptions/account-not-found.exception'
 
 describe('AccountService', () => {
   let service: AccountService
@@ -18,7 +19,8 @@ describe('AccountService', () => {
     const repositoryMock = {
       create: jest.fn(),
       save: jest.fn(),
-      hasAccountType: jest.fn()
+      hasAccountType: jest.fn(),
+      findOne: jest.fn()
     }
     const personServiceMock = {
       findById: jest.fn().mockReturnValue({
@@ -83,6 +85,25 @@ describe('AccountService', () => {
       repository.save = jest.fn().mockReturnValue(accountMock)
       repository.hasAccountType = jest.fn().mockReturnValue(false)
       expect(await service.create(dto)).toEqual(accountMock)
+    })
+  })
+
+  describe('getBalance()', () => {
+    it('should be called repository with correct params', async () => {
+      repository.findOne = jest.fn().mockReturnValue(accountMock)
+      await service.getBalance('any_id')
+      expect(repository.findOne).toBeCalledWith('any_id')
+    })
+
+    it('should be throw AccountNotFound if account not exists', async () => {
+      expect(service.getBalance('any_id')).rejects.toThrow(
+        new AccountNotFound()
+      )
+    })
+
+    it('should be return when repository return', async () => {
+      repository.findOne = jest.fn().mockReturnValue(accountMock)
+      expect(await service.getBalance('any_id')).toEqual(accountMock.balance)
     })
   })
 })

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { Transaction } from '../transactions/entities/transaction.entity'
 import { TransactionsService } from '../transactions/transactions.service'
 import { PersonService } from '../person/person.service'
 import { AccountRepository } from './account.repository'
