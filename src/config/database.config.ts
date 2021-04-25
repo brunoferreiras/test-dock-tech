@@ -20,6 +20,8 @@ export default {
       entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
       synchronize: true,
       ssl: this.get('database.enableSSL')
+        ? { rejectUnauthorized: false }
+        : false
       // migrationsTableName: 'migration',
       // migrations: ['src/migration/*.ts'],
       // cli: {
