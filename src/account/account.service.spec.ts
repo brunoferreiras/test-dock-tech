@@ -9,6 +9,7 @@ import { Account } from './entities/account.entity'
 import { PersonAlreadyHasAccount } from './exceptions/person-already-has-account.exception'
 import { AccountNotFound } from './exceptions/account-not-found.exception'
 import { AccountBlockedException } from './exceptions/account-blocked.exception'
+import { InsufficientMoneyException } from './exceptions/insufficient-money.exception'
 
 describe('AccountService', () => {
   let service: AccountService
@@ -173,6 +174,59 @@ describe('AccountService', () => {
       repository.save = jest.fn().mockReturnValue(accountMock)
       repository.findOne = jest.fn().mockReturnValue(accountMock)
       expect(await service.deposit('any_id', 100)).toEqual(100)
+    })
+  })
+
+  describe('withdraw()', () => {
+    it('should be called repository with correct params', async () => {
+      repository.save = jest.fn().mockReturnValue({
+        ...accountMock,
+        balance: 10
+      })
+      repository.findOne = jest.fn().mockReturnValue({
+        ...accountMock,
+        balance: 10
+      })
+      await service.withdraw('1', 10)
+      expect(repository.findOne).toBeCalledWith('1')
+      expect(repository.save).toBeCalledWith({
+        ...accountMock,
+        balance: 0
+      })
+      expect(transactionsService.register).toBeCalledWith(1, -10)
+    })
+
+    it('should be throw AccountNotFound if account not exists', async () => {
+      await expect(service.withdraw('any_id', 10)).rejects.toThrow(
+        new AccountNotFound()
+      )
+    })
+
+    it('should be throw InsufficientMoneyException if account insufficient money', async () => {
+      repository.findOne = jest.fn().mockReturnValue(accountMock)
+      await expect(service.withdraw('any_id', 10)).rejects.toThrow(
+        new InsufficientMoneyException()
+      )
+    })
+
+    it('should be throw AccountBlockedException if account is blocked', async () => {
+      repository.findOne = jest.fn().mockReturnValue({
+        ...accountMock,
+        account_active: false
+      })
+      await expect(service.withdraw('any_id', 1)).rejects.toThrow(
+        new AccountBlockedException()
+      )
+    })
+
+    it('should be return when success', async () => {
+      repository.save = jest
+        .fn()
+        .mockReturnValue({ ...accountMock, balance: 0 })
+      repository.findOne = jest
+        .fn()
+        .mockReturnValue({ ...accountMock, balance: 100 })
+      expect(await service.withdraw('any_id', 100)).toEqual(0)
     })
   })
 })
