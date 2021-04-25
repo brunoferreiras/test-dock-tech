@@ -1,3 +1,7 @@
+init:
+	cp .env.example .env
+	make up
+
 up:
 	docker-compose up -d
 

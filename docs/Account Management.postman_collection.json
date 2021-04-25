@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "a7b068c4-11e3-4bfe-b808-44f6847b6f01",
+		"name": "Account Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Person",
+			"item": [
+				{
+					"name": "Create Person",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Bruno\",\r\n    \"cpf\": \"12345678922\",\r\n    \"password\": \"123\",\r\n    \"birthday_date\": \"1996-02-20\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/person",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List People",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/person",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Create Account",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"person_id\": 1,\r\n    \"daily_withdraw_limit\": 1000,\r\n    \"type\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/account",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/account/{{ACCOUNT_ID}}/balance",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"{{ACCOUNT_ID}}",
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Set Block Account",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"block\": false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/account/{{ACCOUNT_ID}}/block",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"{{ACCOUNT_ID}}",
+								"block"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deposit in account",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/account/{{ACCOUNT_ID}}/deposit",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"{{ACCOUNT_ID}}",
+								"deposit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Withdraw in account",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{APP_URL}}/account/{{ACCOUNT_ID}}/withdraw",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"{{ACCOUNT_ID}}",
+								"withdraw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bank Statement",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/account/{{ACCOUNT_ID}}/bank_statement",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"{{ACCOUNT_ID}}",
+								"bank_statement"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Bank Statement With Period",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{APP_URL}}/account/{{ACCOUNT_ID}}/bank_statement?start_date=2021-04-24&end_date=2021-04-24",
+							"host": [
+								"{{APP_URL}}"
+							],
+							"path": [
+								"account",
+								"{{ACCOUNT_ID}}",
+								"bank_statement"
+							],
+							"query": [
+								{
+									"key": "start_date",
+									"value": "2021-04-24"
+								},
+								{
+									"key": "end_date",
+									"value": "2021-04-24"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
