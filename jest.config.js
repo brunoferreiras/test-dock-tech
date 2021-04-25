@@ -7,6 +7,7 @@ module.exports = {
     '!src/**/*.type.ts',
     '!src/**/*.interface.ts',
     '!src/**/*.config.ts',
+    '!src/**/*.module.ts',
     '!src/**/index.ts',
     '!src/*'
   ],
