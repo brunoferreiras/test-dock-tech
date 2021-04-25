@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing'
+import { TransactionsService } from '../transactions/transactions.service'
 import { PersonNotFound } from '../person/exceptions/person-not-found'
 import { PersonService } from '../person/person.service'
 import { AccountRepository } from './account.repository'
@@ -28,7 +29,8 @@ describe('AccountService', () => {
       providers: [
         AccountService,
         { provide: AccountRepository, useValue: repositoryMock },
-        { provide: PersonService, useValue: personServiceMock }
+        { provide: PersonService, useValue: personServiceMock },
+        { provide: TransactionsService, useValue: { register: jest.fn() } }
       ]
     }).compile()
 
