@@ -18,7 +18,8 @@ export default {
       password: this.get('database.password'),
       database: this.get('database.database'),
       entities: [`${__dirname}/../**/*.entity{.ts,.js}`],
-      synchronize: true
+      synchronize: true,
+      ssl: this.get('database.enableSSL')
       // migrationsTableName: 'migration',
       // migrations: ['src/migration/*.ts'],
       // cli: {

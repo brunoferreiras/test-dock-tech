@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  namespace: dock
+  name: env-account-management
+data:
+  NODE_ENV: cHJvZHVjdGlvbg==
+  APP_PORT: MzAwMA==
+  DATABASE_NAME: ZDhlOGk2NDNoNmgwa2M=
+  DATABASE_HOST: ZWMyLTUyLTctMTE1LTI1MC5jb21wdXRlLTEuYW1hem9uYXdzLmNvbQ==
+  DATABASE_PORT: NTQzMg==
+  DATABASE_USERNAME: dHhoamdwdWxybGthZWQ=
+  DATABASE_PASSWORD: ZTcyZWEyNDQwYTdmYjUyN2ZmMjZjOTg3Y2FhYzM3NDRjMjY2ZGZmYTY3ODMyNjk2YjhmZGY5ODllMDQ2NmZjZg==

@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: dock
+  name: app
+  labels:
+    app: account
+    tier: backend
+    role: master
+spec:
+  selector:
+    app: account
+    tier: backend
+    role: master
+  ports:
+    - name: 'node'
+      protocol: TCP
+      port: 3000
+  # type: LoadBalancer  // Se o serviço vai expor para a rede
+  # externalTrafficPolicy: Local // Pegar o IP do cliente no container
+  # loadBalancerIP: "34.69.21.238" // Se desejar fixar o ip
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account
+  namespace: dock
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: account
+      tier: backend
+      role: master
+  template:
+    metadata:
+      labels:
+        app: account
+        tier: backend
+        role: master
+    spec:
+      containers:
+        - image: 'brunoferreiras/account-management:1.0.0'
+          name: dock-app
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          envFrom:
+            - secretRef:
+                name: env-account-management
+      restartPolicy: Always

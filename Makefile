@@ -33,3 +33,9 @@ stop:
 
 bash:
 	docker-compose exec app bash
+
+create-prod:
+	# command: make create-pord image_version="1.0.0"
+	@[ "${image_version}" ] || ( echo ">> var version is not set"; exit 1 )
+	docker build -t brunoferreiras/account-management:${image_version} .
+	docker push brunoferreiras/account-management:${image_version}
