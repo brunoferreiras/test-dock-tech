@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer'
 import {
   Column,
   CreateDateColumn,
@@ -23,7 +24,8 @@ export class Person {
   })
   cpf: string
 
-  @Column()
+  @Column({ select: false })
+  @Exclude()
   password: string
 
   @Column({
